@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SheetDiver — your datasheet library, shared with your AI agent</title>
-  <meta name="description" content="SheetDiver is an open-source desktop app that turns component datasheets into a library you and your AI agent can work with: parameters with min/typ/max, every graph and schematic, pin tables and registers, all linked to the page. Group parts into a board and it checks every rail against the datasheets. Works over MCP with Claude Code, Cursor, VS Code and Claude Desktop." />
+  <title>SheetDiver — describe the board, your AI agent designs it from the datasheets</title>
+  <meta name="description" content="SheetDiver is an open-source desktop app that gives your AI agent a datasheet library it can search, fill and design from: it finds parts in a catalogue of 2.5 million, imports their datasheets, extracts the limits, builds the board project with its rails, drafts the reference schematic and checks every rail against every datasheet. Works over MCP with Claude Code, Cursor, VS Code and Claude Desktop." />
   <meta name="theme-color" content="#f5f7fb" />
-  <meta property="og:title" content="SheetDiver — your datasheet library, shared with your AI agent" />
-  <meta property="og:description" content="Datasheets in, structured data out: parameters, figures, pins and registers you and your agent both use, and board projects checked against every limit." />
-  <meta property="og:image" content="assets/screens/part.jpg" />
+  <meta property="og:title" content="SheetDiver — describe the board, your AI agent designs it from the datasheets" />
+  <meta property="og:description" content="From a sentence to a checked reference design: parts found, datasheets imported and extracted, rails and loads added up, a schematic drafted, every limit checked. You see each step." />
+  <meta property="og:image" content="assets/screens/diagram.jpg" />
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,7 +26,7 @@
         <span>SheetDiver</span>
       </a>
       <nav class="nav-links" id="primary-nav" aria-label="Primary">
-        <a href="#together">How it works</a>
+        <a href="#design">Design with an agent</a>
         <a href="#library">Library</a>
         <a href="#projects">Boards</a>
         <a href="#catalogue">Catalogue</a>
@@ -50,13 +50,13 @@
       <div class="wrap hero-grid">
         <div class="hero-copy">
           <a class="release-pill" href="#releases"><span class="pill-tag">Alpha</span> First public release: 0.1</a>
-          <p class="eyebrow">Datasheets for you and your AI agent · Open source</p>
-          <h1>Your datasheet library, <span class="accent">shared with your agent.</span></h1>
+          <p class="eyebrow">Hardware design with an AI agent · Open source</p>
+          <h1>Describe the board. <span class="accent">Your agent designs it from the datasheets.</span></h1>
           <p class="lede">
-            Drop in a PDF or a part number. SheetDiver extracts the spec tables as min/typ/max parameters,
-            every graph and schematic, the pin table and the registers, each linked to the page it came from.
-            Group parts into a board and it checks every rail against every datasheet.
-            <strong>Your agent reads the same library over MCP, looks at the graphs, and records what it verifies.</strong>
+            SheetDiver gives your agent a datasheet library it can search, fill and design from. Ask for a board and it
+            finds the parts in a catalogue of 2.5 million, imports their datasheets, extracts the limits, builds the
+            project with its rails and loads, drafts the reference schematic, and checks every rail against every datasheet.
+            <strong>You watch each step on your screen, and every value it verified stays in the library.</strong>
           </p>
           <div class="cta">
             <a class="btn btn-primary" id="download-btn" href="https://github.com/aitakemyjob/sheetdiver/releases/latest">Download SheetDiver</a>
@@ -65,64 +65,49 @@
           <p class="hero-note">Works with Claude Code, Cursor, VS Code, Claude Desktop, Codex — anything that speaks MCP. macOS, Windows and Linux. Everything stays on your machine.</p>
           <p class="hero-note" id="hero-version"><a href="#releases">Latest release: v0.1.1</a></p>
         </div>
-        <figure class="hero-shot shot" data-full="assets/screens/part.jpg">
-          <img src="assets/screens/part.jpg" alt="A part in SheetDiver: the TPS63900 with its key parameters as cards (input voltage, output current, current limit, quiescent current, thresholds), each marked as extracted automatically." width="1420" height="802" />
-          <figcaption>A buck-boost converter as SheetDiver reads it: the key parameters, each one a click from the page it came from.</figcaption>
+        <figure class="hero-shot shot" data-full="assets/screens/diagram.jpg">
+          <img src="assets/screens/diagram.jpg" alt="A reference schematic drawn by SheetDiver from the connection table an agent drafted: the PCM5102A DAC as a symbol with numbered pins, its decoupling capacitors beside it under the rail's name, the charge-pump capacitors across their pins, net labels on the signal pins, and the reset and boot buttons in their own frames." width="1420" height="802" />
+          <figcaption>The reference schematic of a DAC board the agent drafted, drawn from the connection table and checked against every pin table.</figcaption>
         </figure>
       </div>
     </section>
 
-    <!-- ============================================================ PROBLEM -->
-    <section class="problem">
+    <!-- ============================================================ DESIGN -->
+    <section id="design" class="together">
       <div class="wrap">
-        <h2 class="section-title center">Datasheets are PDFs. Design questions aren't.</h2>
-        <div class="problem-grid">
-          <article>
-            <span class="num">01</span>
-            <h3>The number is on page 7, in a footnote</h3>
-            <p>You scroll sixty pages for the current limit, then again for the condition it was measured under. Your agent reads the same PDF as text soup and guesses which column was <em>typ</em>.</p>
-          </article>
-          <article>
-            <span class="num">02</span>
-            <h3>Every board redoes the same checks</h3>
-            <p>Does 3V3 stay under the DAC's absolute maximum? How much current does the regulator's input really draw? Which capacitor does the datasheet actually ask for? It's the same arithmetic every time, done by hand.</p>
-          </article>
-          <article>
-            <span class="num">03</span>
-            <h3>What the agent learns evaporates</h3>
-            <p>It looked at the efficiency graph, corrected a value, picked an inductor. All of that lives in a chat transcript. Next session it starts from the PDF again.</p>
-          </article>
-        </div>
-        <p class="bridge">SheetDiver makes the datasheet a <strong>database you both use</strong>: extracted once with page references, checked against your board, and corrected by whoever reads it, you or the agent.</p>
-      </div>
-    </section>
-
-    <!-- ============================================================ TOGETHER -->
-    <section id="together" class="together">
-      <div class="wrap">
-        <p class="kicker">How it works</p>
-        <h2 class="section-title">One library, two readers</h2>
-        <p class="section-lede">You work in the app. Your agent works in your terminal or editor. Both read and write the same library, and whatever the agent shows opens in front of you.</p>
-        <ol class="loop">
+        <p class="kicker">Design with an agent</p>
+        <h2 class="section-title">From a sentence to a checked reference design</h2>
+        <p class="section-lede">Your agent works in your terminal or editor; SheetDiver is the library it designs from and the screen you watch it on. One request runs the whole chain, and you can stop it at any step.</p>
+        <ol class="loop six">
           <li>
             <span class="loop-num">1</span>
-            <h3>Datasheets in</h3>
-            <p>Drag in PDFs or folders, paste URLs or part numbers. Sections, figures, spec tables, pin tables and registers come out, each with its page. <a href="#library">Library →</a></p>
+            <h3>Find the parts</h3>
+            <p>It searches the JLCPCB catalogue by specs, in stock, basic library first: a 3.3 V buck-boost for 400 mA, an I2S DAC with line out, a USB-C receptacle. <a href="#catalogue">Catalogue →</a></p>
           </li>
           <li>
             <span class="loop-num">2</span>
-            <h3>Boards checked</h3>
-            <p>Put the parts of a board in a project with its rails. Loads add up through the regulators; every rail is checked against every part's limits. <a href="#projects">Boards →</a></p>
+            <h3>Import the datasheets</h3>
+            <p>Each candidate's datasheet comes into the library and is extracted: parameters with min/typ/max, every graph, the pin table, the recommended inductors and capacitors. <a href="#library">Library →</a></p>
           </li>
           <li>
             <span class="loop-num">3</span>
-            <h3>Your agent reads it too</h3>
-            <p>48 MCP tools: search, parameters, pages and graphs as images, projects, calculators. What it verifies, it records, and the library gets better. <a href="#mcp">Connect →</a></p>
+            <h3>Verify the values</h3>
+            <p>It reads the electrical characteristics and the graphs as images, corrects what extraction got wrong, and records what it checked, so the next design starts from the verified numbers.</p>
           </li>
           <li>
             <span class="loop-num">4</span>
-            <h3>Design from it</h3>
-            <p>Buck, boost, LDO and gate-drive calculators filled from the datasheets, alternatives ranked key by key, and 2.5 million catalogue parts searched offline. <a href="#catalogue">Catalogue →</a></p>
+            <h3>Build the project</h3>
+            <p>Rails with their voltages, the BOM with designators and roles, each part's supply and load. The loads add up through the regulators. <a href="#projects">Boards →</a></p>
+          </li>
+          <li>
+            <span class="loop-num">5</span>
+            <h3>Draft the schematic</h3>
+            <p>Pins on nets, passives where they serve, functional groups. SheetDiver draws it as a schematic and checks every connection against the pin tables.</p>
+          </li>
+          <li>
+            <span class="loop-num">6</span>
+            <h3>Check it against every datasheet</h3>
+            <p>Every rail against every part's absolute-maximum and recommended limits, the regulators' ratings, open pins that must be connected; then the calculators and a design review you can hand to a colleague.</p>
           </li>
         </ol>
 
@@ -131,34 +116,63 @@
           <div class="chat" aria-label="Example conversation with an agent">
             <div class="msg you">
               <span class="who">You</span>
-              <p>The DAC board project shows two errors. What's wrong, and should I keep the MAX77827 for 3V3?</p>
+              <p>Design a USB-C powered audio board: ESP32-C6 as the I2S master, a stereo DAC with a 3.5 mm line out, 3.3 V from a buck-boost. JLCPCB basic parts where you can.</p>
             </div>
             <div class="msg agent">
               <span class="who">Claude Code</span>
               <ul class="calls">
-                <li><code>get_project</code><span>→ C6 Audio DAC · 3 rails, 2 errors</span></li>
-                <li><code>get_parameters</code><span>→ PCM5102A · DVDD abs max 2.25 V (p6)</span></li>
-                <li><code>compare_parts</code><span>→ TPS63900 vs MAX77827, shown</span></li>
+                <li><code>search_catalog</code><span>→ DC-DC, VIN ≥ 4.4 V, IOUT ≥ 400 mA, in stock · 38 parts</span></li>
+                <li><code>search_catalog</code><span>→ audio DAC, I2S, line out · 6 parts</span></li>
+                <li><code>import_datasheets</code><span>→ MAX77827, PCM5102A, ESP32-C6-MINI-1, USBLC6-2SC6, TYPE-C-31-M-12</span></li>
+                <li><code>get_parameters</code><span>→ PCM5102A · DVDD 1.65 … 1.95 V (p6)</span></li>
+                <li><code>create_project</code> · <code>set_rail</code> · <code>add_to_project</code><span>→ C6 Audio DAC · VBUS, 3V3, 3V3A · 18 BOM lines</span></li>
+                <li><code>set_connections</code><span>→ 143 connections, 5 groups · drawn</span></li>
+                <li><code>get_project</code><span>→ 2 errors, 5 warnings</span></li>
               </ul>
-              <p>3V3 reaches 3.4 V, but the PCM5102A's digital supply is rated 1.95 V maximum (page 6). DVDD has to come from its own 1.8 V LDO output, not 3V3. The MAX77827 is fine for the rail itself; I've put it side by side with the TPS63900 on your screen in case quiescent current matters on battery.</p>
+              <p>The board is in the project <strong>C6 Audio DAC</strong>, with the schematic drafted. The checks caught one thing I'd have missed: the PCM5102A's digital supply tops out at 1.95 V, so DVDD has to come from its internal LDO output, not 3V3. I've opened a walkthrough of the fix.</p>
             </div>
             <div class="msg you">
               <span class="who">You</span>
-              <p>Walk me through it.</p>
+              <p>Size the input and output caps for the buck-boost too.</p>
             </div>
             <div class="msg agent">
               <span class="who">Claude Code</span>
               <ul class="calls">
-                <li><code>show_walkthrough</code><span>3 steps: the error, the page, the alternative</span></li>
+                <li><code>calculate</code><span>buck · MAX77827 · fsw 2.5 MHz from p7</span></li>
               </ul>
-              <p>Step 1 of 3 is open: the project with the failing rail. Press Next for the datasheet page behind the limit.</p>
+              <p>4.7 µH, 170 nF minimum output capacitance at 1% ripple; the calculator is on your screen with the page behind each number, saved to the project.</p>
             </div>
           </div>
           <figure class="shot" data-full="assets/screens/agent.jpg">
-            <img src="assets/screens/agent.jpg" alt="A board project with its rails, the agent's explanation in a panel on the right, and a walkthrough bar at the bottom: step 1 of 3, the project reports two errors." width="1420" height="802" loading="lazy" />
-            <figcaption>What you see: the project the agent means, its explanation beside it, and a walkthrough you step through with Next.</figcaption>
+            <img src="assets/screens/agent.jpg" alt="The board project the agent built: three rails with their loads and the one that fails its check, the agent's explanation in a panel on the right, and a walkthrough bar at the bottom, step 1 of 3." width="1420" height="802" loading="lazy" />
+            <figcaption>What you see: the project the agent built, its explanation beside it, and a walkthrough of the problem you step through with Next.</figcaption>
           </figure>
         </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ PROBLEM -->
+    <section class="problem">
+      <div class="wrap">
+        <h2 class="section-title center">Why a library, and not just a smarter chat?</h2>
+        <div class="problem-grid">
+          <article>
+            <span class="num">01</span>
+            <h3>Agents read PDFs as text soup</h3>
+            <p>A spec table flattened to text loses which column was <em>typ</em> and which condition it was measured under. SheetDiver extracts the table once, with its page, and the agent reads rows.</p>
+          </article>
+          <article>
+            <span class="num">02</span>
+            <h3>The checks need numbers, not prose</h3>
+            <p>Does 3V3 stay under the DAC's absolute maximum? What does the regulator's input really draw? With the limits as data, every board is checked the same way, automatically.</p>
+          </article>
+          <article>
+            <span class="num">03</span>
+            <h3>What it learns should stay learned</h3>
+            <p>A value the agent corrected, a graph it described, an inductor it picked: recorded in the library, marked as its own, kept for the next board and the next session.</p>
+          </article>
+        </div>
+        <p class="bridge">SheetDiver makes the datasheet a <strong>database you both use</strong>: extracted once with page references, checked against your board, and corrected by whoever reads it, you or the agent.</p>
       </div>
     </section>
 

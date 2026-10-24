@@ -129,6 +129,7 @@ section { padding: clamp(64px, 9vw, 96px) 0; }
 .loop h3 { margin: 14px 0 8px; font-size: 19px; letter-spacing: -0.01em; }
 .loop p { margin: 0; color: var(--text-2); font-size: 15.5px; }
 .loop a { font-weight: 600; white-space: nowrap; }
+.loop.six { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .together .sub-title { margin-top: 56px; }
 .together .convo { margin-top: 20px; }
 
@@ -298,7 +299,7 @@ section { padding: clamp(64px, 9vw, 96px) 0; }
   .chat { max-width: 720px; }
 }
 @media (max-width: 1023px) {
-  .loop { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .loop, .loop.six { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .nav-links { display: none; }
   .menu-toggle { display: inline-flex; }
   .menu-toggle { order: 3; }
@@ -318,7 +319,7 @@ section { padding: clamp(64px, 9vw, 96px) 0; }
   .section-lede, .lede { max-width: 680px; }
 }
 @media (max-width: 860px) {
-  .problem-grid, .steps, .loop, .lang-grid, .install-grid, .release-grid.two { grid-template-columns: minmax(0, 1fr); }
+  .problem-grid, .steps, .loop, .loop.six, .lang-grid, .install-grid, .release-grid.two { grid-template-columns: minmax(0, 1fr); }
   .problem-grid, .steps, .lang-grid, .install-grid { max-width: 640px; }
   .problem .problem-grid, .languages .lang-grid, .install .install-grid { margin-left: auto; margin-right: auto; }
   .footer .fine { margin-left: 0; flex-basis: 100%; }
