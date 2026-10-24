@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SheetDiver — your datasheet library, shared with your AI agent</title>
+  <meta name="description" content="SheetDiver is an open-source desktop app that turns component datasheets into a library you and your AI agent can work with: parameters with min/typ/max, every graph and schematic, pin tables and registers, all linked to the page. Group parts into a board and it checks every rail against the datasheets. Works over MCP with Claude Code, Cursor, VS Code and Claude Desktop." />
+  <meta name="theme-color" content="#f5f7fb" />
+  <meta property="og:title" content="SheetDiver — your datasheet library, shared with your AI agent" />
+  <meta property="og:description" content="Datasheets in, structured data out: parameters, figures, pins and registers you and your agent both use, and board projects checked against every limit." />
+  <meta property="og:image" content="assets/screens/part.jpg" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav" id="top">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="SheetDiver home">
+        <img src="assets/logo.png" alt="" width="34" height="34" />
+        <span>SheetDiver</span>
+      </a>
+      <nav class="nav-links" id="primary-nav" aria-label="Primary">
+        <a href="#together">How it works</a>
+        <a href="#library">Library</a>
+        <a href="#projects">Boards</a>
+        <a href="#catalogue">Catalogue</a>
+        <a href="#mcp">Connect</a>
+        <a href="#releases">Releases</a>
+        <a href="#install">Install</a>
+      </nav>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <a class="btn btn-ghost nav-gh" href="https://github.com/aitakemyjob/sheetdiver">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============================================================ HERO -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <a class="release-pill" href="#releases"><span class="pill-tag">Alpha</span> First public release: 0.1</a>
+          <p class="eyebrow">Datasheets for you and your AI agent · Open source</p>
+          <h1>Your datasheet library, <span class="accent">shared with your agent.</span></h1>
+          <p class="lede">
+            Drop in a PDF or a part number. SheetDiver extracts the spec tables as min/typ/max parameters,
+            every graph and schematic, the pin table and the registers, each linked to the page it came from.
+            Group parts into a board and it checks every rail against every datasheet.
+            <strong>Your agent reads the same library over MCP, looks at the graphs, and records what it verifies.</strong>
+          </p>
+          <div class="cta">
+            <a class="btn btn-primary" id="download-btn" href="https://github.com/aitakemyjob/sheetdiver/releases/latest">Download SheetDiver</a>
+            <a class="btn" href="#mcp">Connect your agent</a>
+          </div>
+          <p class="hero-note">Works with Claude Code, Cursor, VS Code, Claude Desktop, Codex — anything that speaks MCP. macOS, Windows and Linux. Everything stays on your machine.</p>
+          <p class="hero-note" id="hero-version"><a href="#releases">Latest release: v0.1.1</a></p>
+        </div>
+        <figure class="hero-shot shot" data-full="assets/screens/part.jpg">
+          <img src="assets/screens/part.jpg" alt="A part in SheetDiver: the TPS63900 with its key parameters as cards (input voltage, output current, current limit, quiescent current, thresholds), each marked as extracted automatically." width="1420" height="802" />
+          <figcaption>A buck-boost converter as SheetDiver reads it: the key parameters, each one a click from the page it came from.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============================================================ PROBLEM -->
+    <section class="problem">
+      <div class="wrap">
+        <h2 class="section-title center">Datasheets are PDFs. Design questions aren't.</h2>
+        <div class="problem-grid">
+          <article>
+            <span class="num">01</span>
+            <h3>The number is on page 7, in a footnote</h3>
+            <p>You scroll sixty pages for the current limit, then again for the condition it was measured under. Your agent reads the same PDF as text soup and guesses which column was <em>typ</em>.</p>
+          </article>
+          <article>
+            <span class="num">02</span>
+            <h3>Every board redoes the same checks</h3>
+            <p>Does 3V3 stay under the DAC's absolute maximum? How much current does the regulator's input really draw? Which capacitor does the datasheet actually ask for? It's the same arithmetic every time, done by hand.</p>
+          </article>
+          <article>
+            <span class="num">03</span>
+            <h3>What the agent learns evaporates</h3>
+            <p>It looked at the efficiency graph, corrected a value, picked an inductor. All of that lives in a chat transcript. Next session it starts from the PDF again.</p>
+          </article>
+        </div>
+        <p class="bridge">SheetDiver makes the datasheet a <strong>database you both use</strong>: extracted once with page references, checked against your board, and corrected by whoever reads it, you or the agent.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ TOGETHER -->
+    <section id="together" class="together">
+      <div class="wrap">
+        <p class="kicker">How it works</p>
+        <h2 class="section-title">One library, two readers</h2>
+        <p class="section-lede">You work in the app. Your agent works in your terminal or editor. Both read and write the same library, and whatever the agent shows opens in front of you.</p>
+        <ol class="loop">
+          <li>
+            <span class="loop-num">1</span>
+            <h3>Datasheets in</h3>
+            <p>Drag in PDFs or folders, paste URLs or part numbers. Sections, figures, spec tables, pin tables and registers come out, each with its page. <a href="#library">Library →</a></p>
+          </li>
+          <li>
+            <span class="loop-num">2</span>
+            <h3>Boards checked</h3>
+            <p>Put the parts of a board in a project with its rails. Loads add up through the regulators; every rail is checked against every part's limits. <a href="#projects">Boards →</a></p>
+          </li>
+          <li>
+            <span class="loop-num">3</span>
+            <h3>Your agent reads it too</h3>
+            <p>48 MCP tools: search, parameters, pages and graphs as images, projects, calculators. What it verifies, it records, and the library gets better. <a href="#mcp">Connect →</a></p>
+          </li>
+          <li>
+            <span class="loop-num">4</span>
+            <h3>Design from it</h3>
+            <p>Buck, boost, LDO and gate-drive calculators filled from the datasheets, alternatives ranked key by key, and 2.5 million catalogue parts searched offline. <a href="#catalogue">Catalogue →</a></p>
+          </li>
+        </ol>
+
+        <h3 class="sub-title">What that looks like</h3>
+        <div class="convo">
+          <div class="chat" aria-label="Example conversation with an agent">
+            <div class="msg you">
+              <span class="who">You</span>
+              <p>The DAC board project shows two errors. What's wrong, and should I keep the MAX77827 for 3V3?</p>
+            </div>
+            <div class="msg agent">
+              <span class="who">Claude Code</span>
+              <ul class="calls">
+                <li><code>get_project</code><span>→ C6 Audio DAC · 3 rails, 2 errors</span></li>
+                <li><code>get_parameters</code><span>→ PCM5102A · DVDD abs max 2.25 V (p6)</span></li>
+                <li><code>compare_parts</code><span>→ TPS63900 vs MAX77827, shown</span></li>
+              </ul>
+              <p>3V3 reaches 3.4 V, but the PCM5102A's digital supply is rated 1.95 V maximum (page 6). DVDD has to come from its own 1.8 V LDO output, not 3V3. The MAX77827 is fine for the rail itself; I've put it side by side with the TPS63900 on your screen in case quiescent current matters on battery.</p>
+            </div>
+            <div class="msg you">
+              <span class="who">You</span>
+              <p>Walk me through it.</p>
+            </div>
+            <div class="msg agent">
+              <span class="who">Claude Code</span>
+              <ul class="calls">
+                <li><code>show_walkthrough</code><span>3 steps: the error, the page, the alternative</span></li>
+              </ul>
+              <p>Step 1 of 3 is open: the project with the failing rail. Press Next for the datasheet page behind the limit.</p>
+            </div>
+          </div>
+          <figure class="shot" data-full="assets/screens/agent.jpg">
+            <img src="assets/screens/agent.jpg" alt="A board project with its rails, the agent's explanation in a panel on the right, and a walkthrough bar at the bottom: step 1 of 3, the project reports two errors." width="1420" height="802" loading="lazy" />
+            <figcaption>What you see: the project the agent means, its explanation beside it, and a walkthrough you step through with Next.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ LIBRARY -->
+    <section id="library" class="feature-band alt">
+      <div class="wrap">
+        <p class="kicker">Library</p>
+        <h2 class="section-title">Everything in the datasheet, in its place</h2>
+        <div class="split">
+          <div class="split-copy">
+            <p class="section-lede">Import a PDF, or just type <code>TPS563200</code>, and the datasheet becomes rows and figures you can search, sort, compare and correct.</p>
+            <ul class="checks">
+              <li><strong>Parameters as min/typ/max</strong> with conditions, section (absolute maximum, recommended, electrical), page, and a canonical key: <code>vin</code>, <code>iout</code>, <code>fsw</code>, <code>ilim</code>, <code>iq</code>, <code>rdson</code>, <code>qg</code>… Edit any cell; your values win and survive re-extraction.</li>
+              <li><strong>Every captioned figure</strong> cut out and classified: graph, schematic, waveform, block diagram, pinout, timing, layout, package, with axes read from "Y vs X" captions. Describe what a graph shows and it becomes searchable.</li>
+              <li><strong>Pins, sections and registers</strong>: the pin table per package, the full section tree with its text, and register maps the agent records.</li>
+              <li><strong>Part numbers that resolve</strong>: <code>TPS563200DDCR</code>, <code>MCP1700T-3302E/TT</code>, <code>STM32U545VET6Q</code> and <code>TPS56x200</code> all find the right part. Revisions are detected, and a newer one updates in place.</li>
+            </ul>
+          </div>
+          <figure class="shot" data-full="assets/screens/figures.jpg">
+            <img src="assets/screens/figures.jpg" alt="The Figures tab of a part: 62 figures as a gallery, filtered by kind (waveform, graph, schematic, block diagram, pinout), each with its number, kind and page." width="1420" height="802" loading="lazy" />
+            <figcaption>62 figures from one datasheet, each cut out, classified and placed on its page.</figcaption>
+          </figure>
+        </div>
+        <div class="duo">
+          <figure class="shot" data-full="assets/screens/page.jpg">
+            <img src="assets/screens/page.jpg" alt="The page viewer on page 7 of a datasheet: three graphs outlined with their figure numbers, thumbnails of the pages on the left." width="1420" height="802" loading="lazy" />
+            <figcaption>The page viewer: figures and tables outlined where they were found, the exact region of any parameter highlighted on click, and drag-to-select to read a region or define a missed figure.</figcaption>
+          </figure>
+          <figure class="shot" data-full="assets/screens/figure.jpg">
+            <img src="assets/screens/figure.jpg" alt="A figure view: a quiescent-current-versus-input-voltage graph cut out of the datasheet, with a form beside it for its kind, title, axes, conditions, description and curves." width="1420" height="802" loading="lazy" />
+            <figcaption>A graph on its own, with what it shows recorded beside it. Agents see the same image and fill the form in after looking.</figcaption>
+          </figure>
+        </div>
+        <div class="split reverse">
+          <div class="split-copy">
+            <h3 class="sub-title">Compare, and find what could replace a part</h3>
+            <p>Pick a component type and see its parts side by side on the parameters that matter for it, sorted and filtered with units ("VIN ≥ 24 V, IOUT ≥ 3 A, IQ ≤ 1 µA"), every value linked to its page. Ask what else in your library could replace a part, and the alternatives are ranked key by key: ▲ better, = same, ▼ worse, drop-ins first.</p>
+            <p class="callout">Star parts and mark them preferred, approved, avoid, NRND or EOL. Projects warn about the bad ones, and agents are told to prefer the good ones.</p>
+          </div>
+          <figure class="shot" data-full="assets/screens/compare.jpg">
+            <img src="assets/screens/compare.jpg" alt="Two buck-boost converters compared parameter by parameter, with the best and worst values marked and a note from the agent under each part." width="1420" height="802" loading="lazy" />
+            <figcaption>A comparison the agent put on screen, with its note under each part and the best and worst values marked.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ PROJECTS -->
+    <section id="projects" class="feature-band">
+      <div class="wrap">
+        <p class="kicker">Boards</p>
+        <h2 class="section-title">Your board, checked against every datasheet</h2>
+        <div class="split">
+          <div class="split-copy">
+            <p class="section-lede">A project is a board: its BOM with designators, its rails and their currents. SheetDiver does the power arithmetic and the limit checks you'd otherwise do by hand, with the page reference on every finding.</p>
+            <ul class="checks">
+              <li><strong>Loads add up through the regulators</strong>: a rail's load, the regulator's input current derived from it, and the input power at full load. Chargers, load switches and protection ICs count the way they really draw.</li>
+              <li><strong>Checked against the datasheets</strong>: every rail against every part's absolute-maximum and recommended limits, regulator ratings, parts without a datasheet, parts marked avoid, and the ripple each rail can carry before a part leaves its range.</li>
+              <li><strong>BOM import</strong> from CSV, KiCad, Altium or LCSC codes: parts found in the library or fetched by part number.</li>
+              <li><strong>A design review</strong> as Markdown in one click: findings, rails, parts with their key parameters, the block diagram, connections and calculations.</li>
+            </ul>
+          </div>
+          <figure class="shot" data-full="assets/screens/project.jpg">
+            <img src="assets/screens/project.jpg" alt="A board project: three rails with their voltage range, source, load against the regulator's rating and power, one rail in red because a part on it has no ripple budget left; two errors and five warnings in the header." width="1420" height="802" loading="lazy" />
+            <figcaption>Three rails, their loads against what feeds them, and the one that's in trouble: the DAC's input maximum is below 3V3.</figcaption>
+          </figure>
+        </div>
+        <div class="split reverse">
+          <div class="split-copy">
+            <h3 class="sub-title">A schematic from the connection table</h3>
+            <p>Put pins on nets, or have your agent draft them, and the board is drawn as a schematic: each part as a symbol generated from its pin table, passives with their values as standard symbols, ground symbols and power ports, net labels on the pins, functional groups in their own frames. The connection table is checked against the pin tables: pins that don't exist, supply or ground pins on the wrong net, pins that must be connected and aren't. Zoom, drag, export as SVG.</p>
+            <p class="fine">Drawn from the data, not drawn by hand: change a connection and the drawing follows.</p>
+          </div>
+          <figure class="shot" data-full="assets/screens/diagram.jpg">
+            <img src="assets/screens/diagram.jpg" alt="The block diagram of a board, zoomed on the DAC: the PCM5102A as a symbol with numbered pins, decoupling capacitors beside it under the rail's name, the charge-pump capacitors across their pins, and net labels on the signal pins." width="1420" height="802" loading="lazy" />
+            <figcaption>The DAC section of the board: the part's symbol from its pin table, its capacitors where they belong, and every pin named.</figcaption>
+          </figure>
+        </div>
+        <div class="split reverse">
+          <div class="split-copy">
+            <h3 class="sub-title">Calculators filled from the datasheet</h3>
+            <p>Buck, boost, LDO, MOSFET gate drive, gate divider and resistor divider. Leave a field empty and it's taken from the datasheet or the project's rails, with the page it came from; the outputs come with their formulas, the checks (minimum on-time, current limit, thermal) and suggestions. Save the result to the project.</p>
+          </div>
+          <figure class="shot" data-full="assets/screens/calc.jpg">
+            <img src="assets/screens/calc.jpg" alt="The buck calculator: input fields with units on the left, and on the right the result line and cards for duty cycle, inductance, ripple and peak current, saturation rating, output capacitance and ESR, input capacitance, each with its formula." width="1420" height="802" loading="lazy" />
+            <figcaption>A buck design for the board's 3V3 rail: inductor, ripple, peak current, output capacitance and the input capacitor, each with the formula behind it.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ CATALOGUE -->
+    <section id="catalogue" class="feature-band alt">
+      <div class="wrap">
+        <p class="kicker">Catalogue</p>
+        <h2 class="section-title">2.5 million parts, searched offline</h2>
+        <div class="split">
+          <div class="split-copy">
+            <p class="section-lede">One click downloads JLCPCB's catalogue (the open <a href="https://github.com/yaqwsx/jlcparts">jlcparts</a> dataset, refreshed three times a day) so you can search it without a browser tab per vendor.</p>
+            <ul class="checks">
+              <li><strong>By specs, not by name</strong>: browse a category and filter on its own parameters, V<sub>DS</sub> ≥ 30 V, R<sub>DS(on)</sub> ≤ 10 mΩ, package SOT-23, in stock. Each filter's values follow the others, with counts.</li>
+              <li><strong>Stock, price and library</strong> for every part, basic or extended, and a link to LCSC or JLCPCB.</li>
+              <li><strong>Tick the parts you want</strong> and their datasheets are imported into the library. Part-number lookups and BOM imports fall back to the catalogue's datasheet links.</li>
+            </ul>
+          </div>
+          <figure class="shot" data-full="assets/screens/catalogue.jpg">
+            <img src="assets/screens/catalogue.jpg" alt="The parts catalogue: a search for 3.3 V buck converters in stock, the category tree with part counts on the left, and the matching parts with their LCSC code, manufacturer, description and package." width="1420" height="802" loading="lazy" />
+            <figcaption>Buck converters for 3.3 V, in stock: tick the ones worth a look and their datasheets join the library.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ HOW -->
+    <section id="how" class="how">
+      <div class="wrap">
+        <p class="kicker">Get started</p>
+        <h2 class="section-title">Up and running in three steps</h2>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Import a datasheet</h3>
+            <p>Drop a PDF on the window, or type a part number. Extraction runs locally in a sandboxed PDF engine; nothing is uploaded.</p>
+            <code class="inline-cmd">sheetdiver import tps563200</code>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Connect your agent</h3>
+            <p>One command adds SheetDiver as an MCP server. Your agent can now read the library, look at the graphs, and record what it checks.</p>
+            <code class="inline-cmd">claude mcp add --transport http --scope user sheetdiver http://127.0.0.1:47480/mcp</code>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Ask</h3>
+            <p>"Check the extracted parameters against the electrical characteristics." "Design a 12 V to 3.3 V, 2 A supply with it." "Put my sensor board in a project and check every rail." With <em>Follow agent</em> on, what it shows opens in front of you.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================ MCP -->
+    <section id="mcp" class="mcp">
+      <div class="wrap">
+        <p class="kicker">Connect</p>
+        <h2 class="section-title">Works with the agent you already use</h2>
+        <p class="section-lede">
+          SheetDiver runs a local MCP server with 48 tools for reading the library, recording what the agent verifies, importing, projects and calculators.
+          Add it to your agent with one line.
+        </p>
+
+        <div class="connect">
+          <div class="connect-copy">
+            <h3 class="sub-title">Connect in one line</h3>
+            <p>The server listens at <code>http://127.0.0.1:47480/mcp</code>. Stdio-only clients use the built-in bridge, <code>sheetdiver mcp</code>; Claude Desktop gets a one-click extension from the app's <strong>MCP</strong> pill.</p>
+            <div class="tabs" role="tablist" aria-label="Agent">
+              <button role="tab" aria-selected="true" data-tab="cc">Claude Code</button>
+              <button role="tab" aria-selected="false" data-tab="cursor">Cursor</button>
+              <button role="tab" aria-selected="false" data-tab="vscode">VS Code</button>
+              <button role="tab" aria-selected="false" data-tab="desktop">Claude Desktop</button>
+              <button role="tab" aria-selected="false" data-tab="codex">Codex</button>
+            </div>
+            <div class="snippet" data-panel="cc"><pre><code>claude mcp add --transport http --scope user sheetdiver http://127.0.0.1:47480/mcp</code></pre><button class="copy" type="button">Copy</button></div>
+            <div class="snippet" data-panel="cursor" hidden><pre><code>// ~/.cursor/mcp.json
+{ "mcpServers": { "sheetdiver": { "url": "http://127.0.0.1:47480/mcp" } } }</code></pre><button class="copy" type="button">Copy</button></div>
+            <div class="snippet" data-panel="vscode" hidden><pre><code>// .vscode/mcp.json
+{ "servers": { "sheetdiver": { "type": "http", "url": "http://127.0.0.1:47480/mcp" } } }</code></pre><button class="copy" type="button">Copy</button></div>
+            <div class="snippet" data-panel="desktop" hidden><pre><code>// In the app: MCP pill › Claude Desktop › Save Claude Desktop extension,
+// then Claude Desktop › Settings › Extensions › Advanced settings › Install Extension… › sheetdiver.mcpb
+// Or by hand, in claude_desktop_config.json:
+{ "mcpServers": { "sheetdiver": { "command": "sheetdiver", "args": ["mcp"] } } }</code></pre><button class="copy" type="button">Copy</button></div>
+            <div class="snippet" data-panel="codex" hidden><pre><code># ~/.codex/config.toml
+[mcp_servers.sheetdiver]
+command = "sheetdiver"
+args = ["mcp"]</code></pre><button class="copy" type="button">Copy</button></div>
+          </div>
+          <figure class="shot" data-full="assets/screens/connect.jpg">
+            <img src="assets/screens/connect.jpg" alt="The Connect an agent dialog: the server's address and status, and tabs for Claude Code, Claude Desktop, Codex, Cursor, VS Code, Gemini CLI and Windsurf with the command or config file for each, ready to copy or save." width="1420" height="802" loading="lazy" />
+            <figcaption>The MCP pill opens this: every client's setup with this copy's path filled in, and each config file saved on request.</figcaption>
+          </figure>
+        </div>
+        <details class="tool-details">
+          <summary>See all 48 tools</summary>
+        <div class="tool-grid">
+          <div class="tool-group">
+            <h4>Read the library</h4>
+            <p>Structured answers with page references, not guesses from a PDF.</p>
+            <ul>
+              <li><code>library_overview</code> · <code>search</code> · <code>list_categories</code> · <code>list_parts</code></li>
+              <li><code>get_part</code> · <code>get_parameters</code> key parameters, min/typ/max with conditions and pages</li>
+              <li><code>get_section</code> · <code>read_pages</code> · <code>get_page_image</code> the text, or the page as an image</li>
+              <li><code>list_figures</code> · <code>get_figure</code> · <code>get_tables</code> graphs, schematics and tables as images</li>
+              <li><code>get_pins</code> · <code>get_registers</code> · <code>compare_parts</code> · <code>find_alternatives</code></li>
+              <li><code>get_ui_context</code> what you have open right now</li>
+            </ul>
+          </div>
+          <div class="tool-group">
+            <h4>Record what it learns</h4>
+            <p>Marked as the agent's, kept across sessions, winning over extraction.</p>
+            <ul>
+              <li><code>record_parameters</code> corrected or missing spec rows</li>
+              <li><code>describe_figure</code> what a graph shows, with values read off it</li>
+              <li><code>record_table</code> · <code>record_pins</code> · <code>record_registers</code> transcribed from the images</li>
+              <li><code>record_recommendations</code> the inductors and capacitors the datasheet asks for</li>
+              <li><code>update_part</code> · <code>add_note</code> · <code>list_notes</code></li>
+            </ul>
+          </div>
+          <div class="tool-group">
+            <h4>Show you</h4>
+            <p>Put it on your screen instead of in the chat.</p>
+            <ul>
+              <li><code>show</code> a part, page, figure, section, project, comparison, catalogue search or calculator, with a caption</li>
+              <li><code>show_walkthrough</code> several of those in order, stepped through with Next</li>
+            </ul>
+            <p class="tool-note">With Follow agent on, each one opens in front of you.</p>
+          </div>
+          <div class="tool-group">
+            <h4>Import and the catalogue</h4>
+            <p>Only when you let it: agent imports can be switched off.</p>
+            <ul>
+              <li><code>import_datasheet</code> · <code>import_datasheets</code> by file, URL or part number</li>
+              <li><code>import_bom</code> a CSV or KiCad BOM into a project</li>
+              <li><code>check_datasheet_updates</code> · <code>apply_datasheet_update</code> newer revisions</li>
+              <li><code>catalog_parameters</code> · <code>search_catalog</code> 2.5 million parts by specs</li>
+            </ul>
+          </div>
+          <div class="tool-group">
+            <h4>Boards and calculators</h4>
+            <p>The same projects and checks you see in the app.</p>
+            <ul>
+              <li><code>list_projects</code> · <code>create_project</code> · <code>get_project</code> · <code>delete_project</code></li>
+              <li><code>set_rail</code> · <code>add_to_project</code> · <code>update_project_part</code> rails, BOM lines and currents</li>
+              <li><code>set_connections</code> · <code>get_connections</code> · <code>get_diagram_image</code> the schematic, drafted and checked</li>
+              <li><code>export_project_report</code> the design review as Markdown</li>
+              <li><code>list_calculators</code> · <code>calculate</code> buck, boost, LDO, gate drive, dividers</li>
+            </ul>
+            <p class="tool-note">Agents can't delete datasheets from the library.</p>
+          </div>
+        </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============================================================ SAFETY -->
+    <section class="safety">
+      <div class="wrap safety-grid">
+        <div>
+          <p class="kicker">Safety model</p>
+          <h2 class="section-title">Your library, your rules</h2>
+        </div>
+        <ul class="safety-list">
+          <li><span>01</span><div><strong>Local only.</strong> The server binds to <code>127.0.0.1</code>, rejects DNS rebinding and cross-site requests. Your datasheets and designs never leave your machine.</div></li>
+          <li><span>02</span><div><strong>Sandboxed PDFs.</strong> Datasheets are parsed by PDFium compiled to WebAssembly, with no filesystem access inside the engine.</div></li>
+          <li><span>03</span><div><strong>Agents are marked.</strong> Everything an agent records is tagged as its own and stays inside the library. Settings turn agents off, make them read-only, or forbid imports.</div></li>
+          <li><span>04</span><div><strong>No deletion by agents.</strong> Removing a datasheet is yours to confirm, with a list of what goes.</div></li>
+          <li><span>05</span><div><strong>Online only when you ask.</strong> Importing from a URL or part number, checking for a newer revision, downloading the catalogue, or fetching the offline translation model, each on request.</div></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ EXTRACTION -->
+    <section class="languages">
+      <div class="wrap">
+        <h2 class="section-title center">What extraction handles</h2>
+        <div class="lang-grid">
+          <div class="lang-card">
+            <span class="level precise">Deterministic</span>
+            <h3>No model, no network</h3>
+            <p>Outlines and headings, two-column pages, side-by-side graphs, spec and pin tables in the TI, ST, Microchip, Infineon and AOS styles, revisions, recommended components. Checked against a corpus of real datasheets, with exact page references so you can confirm anything.</p>
+          </div>
+          <div class="lang-card">
+            <span class="level precise">Included</span>
+            <h3>Chinese and small-vendor datasheets</h3>
+            <p>Chinese headings, spec and pin tables, uncaptioned figures and pins described in prose. A part's text can be translated to English inside the app, offline, with an electronics glossary; the model downloads only when you ask.</p>
+          </div>
+          <div class="lang-card">
+            <span class="level">The limits</span>
+            <h3>Where it needs help</h3>
+            <p>Dense multi-column tables in large MCU datasheets and scanned PDFs extract poorly. The section text and page images are still there for you and the agent to read, and anything recorded takes precedence over extraction.</p>
+          </div>
+        </div>
+        <p class="fine center"><a href="https://github.com/aitakemyjob/sheetdiver/blob/main/docs/ARCHITECTURE.md">How extraction works, and what it's checked against →</a></p>
+      </div>
+    </section>
+
+    <!-- ============================================================ RELEASES -->
+    <section id="releases" class="releases">
+      <div class="wrap">
+        <p class="kicker">Releases</p>
+        <h2 class="section-title">What's new</h2>
+        <p class="section-lede">Every release is built and tested in CI on macOS, Windows and Linux, with checksums, an SBOM and signed build provenance for every download.</p>
+        <div class="release-grid" id="release-grid">
+          <article class="release-card latest">
+            <div class="release-head">
+              <h3><a href="https://github.com/aitakemyjob/sheetdiver/releases/tag/v0.1.1">v0.1.1</a></h3>
+              <span class="badge stable">Latest</span>
+              <span class="release-date">October 24, 2026</span>
+            </div>
+            <p class="release-sub">The first public release: the desktop app, its built-in MCP server, the parts catalogue, and installers for every platform.</p>
+            <ul class="release-notes">
+              <li>Datasheets in, structured data out: parameters, figures, pins, registers and sections with page references</li>
+              <li>Board projects with rails, loads, limit checks, a schematic from the connection table, and design calculators</li>
+              <li>The JLCPCB parts catalogue, searched offline by specs</li>
+              <li>48 MCP tools and a Claude Desktop extension</li>
+            </ul>
+            <div class="release-downloads">
+              <a class="dl" href="https://github.com/aitakemyjob/sheetdiver/releases/latest">All downloads</a>
+            </div>
+          </article>
+        </div>
+        <p class="fine release-more">
+          <a href="https://github.com/aitakemyjob/sheetdiver/releases">All releases on GitHub</a> ·
+          <a href="https://github.com/aitakemyjob/sheetdiver/blob/main/CHANGELOG.md">Changelog</a> ·
+          <a href="https://github.com/aitakemyjob/sheetdiver/releases.atom">RSS feed</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================ INSTALL -->
+    <section id="install" class="install">
+      <div class="wrap">
+        <h2 class="section-title center">Get SheetDiver</h2>
+        <p class="section-lede center">Free and open source under the MIT license. An alpha: expect rough edges, and tell us about them.</p>
+        <div class="install-grid">
+          <div class="install-card">
+            <h3>macOS &amp; Linux</h3>
+            <div class="snippet"><pre><code>curl -fsSL https://raw.githubusercontent.com/<wbr>aitakemyjob/<wbr>sheetdiver/<wbr>main/<wbr>scripts/<wbr>install.sh | sh</code></pre><button class="copy" type="button">Copy</button></div>
+            <p class="fine">Universal app for Apple Silicon &amp; Intel. Linux: <code>.deb</code>, <code>.rpm</code>, <code>.tar.gz</code> (x64, ARM64); needs WebKitGTK 4.1.</p>
+          </div>
+          <div class="install-card">
+            <h3>Windows</h3>
+            <div class="snippet"><pre><code>irm https://raw.githubusercontent.com/<wbr>aitakemyjob/<wbr>sheetdiver/<wbr>main/<wbr>scripts/<wbr>install.ps1 | iex</code></pre><button class="copy" type="button">Copy</button></div>
+            <p class="fine">Installer or portable <code>.zip</code>. Uses the WebView2 runtime built into Windows.</p>
+          </div>
+          <div class="install-card">
+            <h3>Server / headless</h3>
+            <div class="snippet"><pre><code>sheetdiver serve</code></pre><button class="copy" type="button">Copy</button></div>
+            <p class="fine">The same UI in your browser, and the same MCP server, on a box without a desktop. Binaries for every OS and architecture.</p>
+          </div>
+        </div>
+        <p class="fine center">The builds aren't code-signed yet. The install scripts verify each download's checksum; by hand, check <code>checksums.txt</code>, then clear the quarantine flag on macOS or choose <em>More info › Run anyway</em> on Windows.</p>
+        <div class="cta center">
+          <a class="btn btn-primary" href="https://github.com/aitakemyjob/sheetdiver/releases/latest">All downloads</a>
+          <a class="btn" href="https://github.com/aitakemyjob/sheetdiver">Star on GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="brand">
+        <img src="assets/logo.png" alt="" width="28" height="28" />
+        <span>SheetDiver</span>
+      </div>
+      <nav aria-label="Footer">
+        <a href="https://github.com/aitakemyjob/sheetdiver">GitHub</a>
+        <a href="https://github.com/aitakemyjob/sheetdiver/blob/main/docs/MCP.md">MCP reference</a>
+        <a href="https://github.com/aitakemyjob/sheetdiver/blob/main/docs/ARCHITECTURE.md">Architecture</a>
+        <a href="https://github.com/aitakemyjob/sheetdiver/blob/main/CHANGELOG.md">Changelog</a>
+        <a href="https://github.com/aitakemyjob/sheetdiver/issues">Issues</a>
+        <a href="https://codediver.app">CodeDiver</a>
+      </nav>
+      <p class="fine">MIT licensed. Screenshots show real datasheets and a real board in SheetDiver; the datasheets belong to their manufacturers. No catalogue or datasheet data ships with the app.</p>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox-close" type="button" aria-label="Close">×</button>
+    <img alt="" />
+    <p class="lightbox-caption"></p>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
