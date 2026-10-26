@@ -63,7 +63,7 @@
             <a class="btn" href="#mcp">Connect your agent</a>
           </div>
           <p class="hero-note">Works with Claude Code, Cursor, VS Code, Claude Desktop, Codex — anything that speaks MCP. macOS, Windows and Linux. Everything stays on your machine.</p>
-          <p class="hero-note" id="hero-version"><a href="#releases">Latest release: v0.1.1</a></p>
+          <p class="hero-note" id="hero-version"><a href="#releases">Latest release: v0.2.0</a></p>
         </div>
         <figure class="hero-shot shot" data-full="assets/screens/diagram.jpg">
           <img src="assets/screens/diagram.jpg" alt="A reference schematic drawn by SheetDiver from the connection table an agent drafted: the PCM5102A DAC as a symbol with numbered pins, its decoupling capacitors beside it under the rail's name, the charge-pump capacitors across their pins, net labels on the signal pins, and the reset and boot buttons in their own frames." width="1420" height="802" />
@@ -466,16 +466,16 @@ args = ["mcp"]</code></pre><button class="copy" type="button">Copy</button></div
         <div class="release-grid" id="release-grid">
           <article class="release-card latest">
             <div class="release-head">
-              <h3><a href="https://github.com/aitakemyjob/sheetdiver/releases/tag/v0.1.1">v0.1.1</a></h3>
+              <h3><a href="https://github.com/aitakemyjob/sheetdiver/releases/tag/v0.2.0">v0.2.0</a></h3>
               <span class="badge stable">Latest</span>
-              <span class="release-date">October 24, 2026</span>
+              <span class="release-date">October 26, 2026</span>
             </div>
-            <p class="release-sub">The first public release: the desktop app, its built-in MCP server, the parts catalogue, and installers for every platform.</p>
+            <p class="release-sub">Pins and categories: the fixes found capturing a real ten-IC board over MCP, so a board goes from datasheets to a checked connection table with fewer pins entered by hand.</p>
             <ul class="release-notes">
-              <li>Datasheets in, structured data out: parameters, figures, pins, registers and sections with page references</li>
-              <li>Board projects with rails, loads, limit checks, a schematic from the connection table, and design calculators</li>
-              <li>The JLCPCB parts catalogue, searched offline by specs</li>
-              <li>48 MCP tools and a Claude Desktop extension</li>
+              <li>Pin tables with a column per package are read, and an import says when pins are missing or unnumbered</li>
+              <li>Imports get the right category: fuel gauges, TVS diodes and eFuses are no longer MCUs, sensors or load switches</li>
+              <li>Orderable part numbers (MAX17048G+T10) find their part</li>
+              <li>The agent sees a catalogue downloaded after it connected, and an inductor across a converter's LX pins is drawn properly</li>
             </ul>
             <div class="release-downloads">
               <a class="dl" href="https://github.com/aitakemyjob/sheetdiver/releases/latest">All downloads</a>
