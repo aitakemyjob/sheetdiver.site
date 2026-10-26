@@ -5,7 +5,8 @@ a datasheet library for electronics design, shared with your AI agent over
 MCP.
 
 A single static page with no build step: `index.html`, `styles.css`,
-`main.js` and `assets/`. Served with GitHub Pages from the `main` branch.
+`main.js` and `assets/`. Served with GitHub Pages from the `main` branch at
+[sheetdiver.com](https://sheetdiver.com) (`CNAME`).
 
 ## Preview locally
 
